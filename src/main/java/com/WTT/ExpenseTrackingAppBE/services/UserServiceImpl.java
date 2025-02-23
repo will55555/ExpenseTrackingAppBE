@@ -6,7 +6,8 @@ import com.WTT.ExpenseTrackingAppBE.dto.PostNewUser;
 import com.WTT.ExpenseTrackingAppBE.dto.UserDto;
 import com.WTT.ExpenseTrackingAppBE.entities.User;
 import com.WTT.ExpenseTrackingAppBE.exceptions.InvalidRoleException;
-import com.WTT.ExpenseTrackingAppBE.exceptions.UsernameTakenException;
+import com.WTT.ExpenseTrackingAppBE.exceptions.UserNameTakenException;
+
 import com.WTT.ExpenseTrackingAppBE.repos.UserRepo;
 import lombok.Data;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,6 +25,7 @@ public class UserServiceImpl implements UserService{
     private UserRepo userRepo;
     private PasswordEncoder passwordEncoder;
     private AuthenticationManager authenticationManager;
+
     private JwtService jwtService;
 
     @Override
@@ -31,11 +33,11 @@ public class UserServiceImpl implements UserService{
         // Check if username is already taken
         Optional<User> possibleNameTaken =
                 userRepo
-                        .findByUsername(postNewUser
+                        .findByUserName(postNewUser
                                 .userName()
                                 .toLowerCase());
         if(possibleNameTaken.isPresent()){
-            throw new UsernameTakenException("Username has been taken, Please choose another!");
+            throw new UserNameTakenException("Username has been taken, Please choose another!");
         }
 
         // Prevent creation of ADMIN users

@@ -1,9 +1,6 @@
 package com.WTT.ExpenseTrackingAppBE.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,23 +14,27 @@ import java.util.List;
 @Data //bundles the features of @ToString, @EqualsAndHashCode, @Getter / @Setter and @RequiredArgsConstructor together.
 public class User implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true, nullable = false)
     private String userName;
     private String email;
     private String password;
     private String role;
 
-    public User(String userName, String email, String password) {
+    public User(){
+
+    }
+
+    public User(String userName, String password, String role) {
         this.userName = userName;
-        this.email = email;
         this.password = password;
         this.role = role;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE"+role));
+        return List.of(new SimpleGrantedAuthority("ROLE_"+role));
     }
 
 

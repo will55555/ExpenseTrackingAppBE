@@ -9,5 +9,5 @@ import java.util.Optional;
 //It extends ListCrudRepository, providing a set of CRUD operations that return List instead of Iterable.
 @Repository
 public interface UserRepo extends ListCrudRepository<User, String> {
-    Optional<User> findByUsername(String userName);
+    Optional<User> findByUserName(String userName);
 }
