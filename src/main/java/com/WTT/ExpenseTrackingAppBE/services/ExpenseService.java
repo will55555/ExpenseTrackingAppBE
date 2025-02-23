@@ -12,5 +12,6 @@ public interface ExpenseService {
     public Expense saveExpense(Expense expense, ExpenseDto expenseDto);
     public Expense postExpense(ExpenseDto expenseDto);
     public Expense getExpenseById(Long id);
+    public Expense updateExpense(Long id, ExpenseDto expenseDto);
     public void deleteExpense(Long id);
 }
