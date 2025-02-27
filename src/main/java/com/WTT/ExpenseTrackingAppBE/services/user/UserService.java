@@ -1,10 +1,11 @@
-package com.WTT.ExpenseTrackingAppBE.services;
+package com.WTT.ExpenseTrackingAppBE.services.user;
 
 import com.WTT.ExpenseTrackingAppBE.dto.AuthorizationRequest;
 import com.WTT.ExpenseTrackingAppBE.dto.PostNewUser;
 import com.WTT.ExpenseTrackingAppBE.dto.UserDto;
 
 public interface UserService {
-    UserDto createUser(PostNewUser postNewUser);
+    UserDto registerUser(PostNewUser postNewUser);
     String login(AuthorizationRequest request);
+
 }

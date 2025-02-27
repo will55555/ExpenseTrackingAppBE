@@ -2,18 +2,13 @@ package com.WTT.ExpenseTrackingAppBE.controllers;
 
 import com.WTT.ExpenseTrackingAppBE.dto.ExpenseDto;
 import com.WTT.ExpenseTrackingAppBE.entities.Expense;
-import com.WTT.ExpenseTrackingAppBE.services.ExpenseService;
-import com.WTT.ExpenseTrackingAppBE.services.ExpenseServiceImpl;
+import com.WTT.ExpenseTrackingAppBE.services.expense.ExpenseService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/expense")
@@ -21,8 +16,8 @@ import java.util.List;
 @CrossOrigin("*")
 public class ExpenseController {
 
-    @Autowired
-    private ExpenseService expenseService;
+
+    private final ExpenseService expenseService;
     //private ExpenseServiceImpl expenseServiceImpl;
 
     @PostMapping("/")

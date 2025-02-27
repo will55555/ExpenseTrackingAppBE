@@ -31,7 +31,7 @@ public class JwtService {
         User user = (User) userDetailsService.loadUserByUsername(userName);
         Map<String, Object> claims = new HashMap<>();
         claims.put("sub", user.getUsername());
-        claims.put("role", user.getRole());
+
         return generateToken(claims, user);
     }
 

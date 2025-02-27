@@ -20,21 +20,21 @@ public class User implements UserDetails {
     private String userName;
     private String email;
     private String password;
-    private String role;
+
 
     public User(){
 
     }
 
-    public User(String userName, String password, String role) {
+    public User(String userName, String password) {
         this.userName = userName;
         this.password = password;
-        this.role = role;
+
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_"+role));
+        return List.of(new SimpleGrantedAuthority("ROLE_"));
     }
 
 

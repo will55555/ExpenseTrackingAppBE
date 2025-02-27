@@ -1,13 +1,26 @@
 package com.WTT.ExpenseTrackingAppBE.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-//Data Transfer Object (DTO) for User information.
-//Immutable design with final fields and no setters.
-//Contains only essential user information
 @Data
+@AllArgsConstructor // Generates a constructor with all fields
+@NoArgsConstructor // Generates a no-args constructor
 public class UserDto {
-    private final String userName;
-    private final String role;
+    private long id;
+    private String userName;
+    private String password;
+    private String email;
+
+
+    // Custom constructor for specific fields
+    public UserDto(String email, String userName, String password) {
+        this.email = email;
+        this.userName = userName;
+        this.password = password;
+
+    }
+
 
 }

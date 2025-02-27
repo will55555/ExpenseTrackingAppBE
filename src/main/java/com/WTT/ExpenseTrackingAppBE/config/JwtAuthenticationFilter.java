@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
@@ -31,47 +32,51 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
         final String authHeader = request.getHeader("Authorization");
-        final String jwt;
-        final String userName;
-
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            System.out.println("No Authorization header or invalid format.");
+            // Log that the authorization header is missing or invalid
+            logger.debug("No Authorization header or invalid format.");
             filterChain.doFilter(request, response);
             return;
         }
 
-        jwt = authHeader.substring(7);
-        userName = jwtService.extractUserName(jwt);
+        // Extract JWT token from the header
+        String jwt = authHeader.substring(7);
+        String userName = jwtService.extractUserName(jwt);
 
-        System.out.println("Extracted userName: " + userName);
         if (userName == null || userName.isEmpty()) {
-            System.out.println("JWT Token extraction failed.");
+            logger.debug("JWT Token extraction failed or user not found in token.");
             filterChain.doFilter(request, response);
             return;
         }
 
+        // Check if user is already authenticated
         if (SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
-            System.out.println("User details found: " + userDetails.getUsername());
 
+            logger.debug("User details loaded: {}");
+
+            // Validate JWT token
             boolean isValid = jwtService.isTokenValid(jwt, (User) userDetails);
-            System.out.println("JWT Validation Result: " + isValid);
-
             if (isValid) {
+                // Create and set authentication token
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                        userDetails, // Pass the full object
-                        null,
-                        userDetails.getAuthorities()
-                );
-                authenticationToken.setDetails(
-                        new WebAuthenticationDetailsSource().buildDetails(request)
-                );
+                        userDetails, null, userDetails.getAuthorities());
+                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+
+                logger.debug("JWT Token validated and authentication set for user: {}");
             } else {
-                System.out.println("JWT Token is invalid.");
+                logger.debug("JWT Token is invalid.");
             }
         }
 
+        // Continue with the request
         filterChain.doFilter(request, response);
+    }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        // Skip the login endpoint to avoid unnecessary checks
+        return request.getRequestURI().equals("/api/users/login");
     }
 }

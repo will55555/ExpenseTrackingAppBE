@@ -1,39 +1,25 @@
 package com.WTT.ExpenseTrackingAppBE.config;
 
-
-import lombok.Data;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.validation.annotation.Validated;
 
-/**
- * Configuration class for JWT (JSON Web Token) properties.
- * This class is responsible for binding JWT-related properties from the application's configuration file.
- *
- * Key points:
- * 1. Uses @Configuration to indicate this is a configuration class.
- * 2. Uses @ConfigurationProperties to bind properties with the "jwt" prefix from the configuration file.
- * 3. Provides getter and setter methods for JWT secret and expiration time.
- * 4. Allows for externalized configuration of JWT parameters.
- */
-@Data
-@Configuration("jwtConfigProps")
+@Setter
+@Getter
+@Configuration
 @ConfigurationProperties(prefix = "jwt")
+@Validated // Enables validation for this class
 public class JwtConfigProperty {
 
-    /**
-     * The secret key used for signing JWTs.
-     */
+    // Getters and setters
+    @NotBlank(message = "JWT secret key must not be blank")
     private String secret;
 
-    /**
-     * The expiration time for JWTs in milliseconds.
-     */
+    @Positive(message = "JWT expiration time must be a positive value")
     private long expiration;
-
-    /**
-     * Gets the JWT secret key.
-     *
-     * @return The secret key used for JWT signing.
-     */
 
 }

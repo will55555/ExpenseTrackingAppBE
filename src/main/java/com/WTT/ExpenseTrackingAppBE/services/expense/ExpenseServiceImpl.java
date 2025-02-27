@@ -1,9 +1,8 @@
-package com.WTT.ExpenseTrackingAppBE.services;
+package com.WTT.ExpenseTrackingAppBE.services.expense;
 
 import com.WTT.ExpenseTrackingAppBE.dto.ExpenseDto;
 import com.WTT.ExpenseTrackingAppBE.repos.ExpenseRepo;
 import jakarta.persistence.EntityNotFoundException;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,8 +20,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ExpenseServiceImpl implements ExpenseService{
 
-    @Autowired
-    private ExpenseRepo expenseRepo;
+
+    private final ExpenseRepo expenseRepo;
     /**
      * @param expenseDto
      * @return
